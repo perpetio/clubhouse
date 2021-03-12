@@ -17,9 +17,10 @@ class RoomsList extends StatefulWidget {
 }
 
 class _RoomsListState extends State<RoomsList> {
+  final collection = Firestore.instance.collection('rooms');
+
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
-  final collection = Firestore.instance.collection('rooms');
 
   void _onRefresh() async {
     await Future.delayed(Duration(milliseconds: 1000));
@@ -29,30 +30,6 @@ class _RoomsListState extends State<RoomsList> {
   void _onLoading() async {
     await Future.delayed(Duration(milliseconds: 1000));
     _refreshController.loadComplete();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.bottomCenter,
-      children: [
-        SmartRefresher(
-          enablePullDown: true,
-          controller: _refreshController,
-          onRefresh: _onRefresh,
-          onLoading: _onLoading,
-          child: ListView.builder(
-            padding: const EdgeInsets.only(bottom: 80, left: 20, right: 20),
-            itemBuilder: (context, index) {
-              return buildRoomCard(rooms[index]);
-            },
-            itemCount: rooms.length,
-          ),
-        ),
-        buildGradientContainer(),
-        buildStartRoomButton(),
-      ],
-    );
   }
 
   Widget buildRoomCard(Room room) {
@@ -141,6 +118,30 @@ class _RoomsListState extends State<RoomsList> {
           ],
         );
       },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.bottomCenter,
+      children: [
+        SmartRefresher(
+          enablePullDown: true,
+          controller: _refreshController,
+          onRefresh: _onRefresh,
+          onLoading: _onLoading,
+          child: ListView.builder(
+            padding: const EdgeInsets.only(bottom: 80, left: 20, right: 20),
+            itemBuilder: (context, index) {
+              return buildRoomCard(rooms[index]);
+            },
+            itemCount: rooms.length,
+          ),
+        ),
+        buildGradientContainer(),
+        buildStartRoomButton(),
+      ],
     );
   }
 }

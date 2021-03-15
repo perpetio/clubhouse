@@ -1,0 +1,32 @@
+name: clubhouse
+description: A new Flutter project.
+
+publish_to: "none"
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.2.2 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.0
+  agora_rtc_engine: ^3.2.1
+  permission_handler: ^5.0.0
+  firebase_auth:
+  firebase_core: ^0.4.4
+  cloud_firestore: ^0.12.9
+  country_code_picker: ^1.7.0
+  pull_to_refresh: 1.6.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/

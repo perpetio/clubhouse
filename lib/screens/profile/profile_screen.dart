@@ -1,8 +1,8 @@
-import 'package:clubhouse/core/router.dart';
-import 'package:clubhouse/models/user.dart';
+import 'package:clubhouse/utils/router.dart';
+import 'package:clubhouse/models/models.dart';
 import 'package:clubhouse/services/authenticate.dart';
 import 'package:clubhouse/core/data.dart';
-import 'package:clubhouse/widgets/round_image.dart';
+import 'package:clubhouse/widgets/rounded_image.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -40,7 +40,7 @@ class ProfileScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        RoundImage(
+        RoundedImage(
             path: profile.profileImage,
             width: 100,
             height: 100,
@@ -65,7 +65,7 @@ class ProfileScreen extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 20),
           child: Text(
-            dummyText,
+            profileText,
             style: TextStyle(fontSize: 15),
           ),
         ),

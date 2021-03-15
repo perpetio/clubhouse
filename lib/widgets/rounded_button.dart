@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class RoundButton extends StatelessWidget {
+class RoundedButton extends StatelessWidget {
   final String text;
   final double fontSize;
   final Color color;
@@ -12,16 +12,13 @@ class RoundButton extends StatelessWidget {
   final double minimumWidth;
   final double minimumHeight;
 
-  const RoundButton({
+  const RoundedButton({
     Key key,
     this.text = '',
     this.fontSize = 20,
     this.color,
     this.disabledColor,
-    this.padding = const EdgeInsets.symmetric(
-      vertical: 10,
-      horizontal: 25,
-    ),
+    this.padding = const EdgeInsets.symmetric(vertical: 10, horizontal: 25),
     this.onPressed,
     this.isCircle = false,
     this.minimumWidth = 0,
@@ -57,10 +54,7 @@ class RoundButton extends StatelessWidget {
       child: text.isNotEmpty
           ? Text(
               text,
-              style: TextStyle(
-                fontSize: fontSize,
-                color: Colors.white,
-              ),
+              style: TextStyle(fontSize: fontSize, color: Colors.white),
             )
           : child,
     );

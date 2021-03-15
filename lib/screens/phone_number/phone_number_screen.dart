@@ -1,7 +1,7 @@
-import 'package:clubhouse/core/router.dart';
+import 'package:clubhouse/utils/router.dart';
 import 'package:clubhouse/services/authenticate.dart';
 import 'package:clubhouse/utils/app_color.dart';
-import 'package:clubhouse/widgets/round_button.dart';
+import 'package:clubhouse/widgets/rounded_button.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -123,7 +123,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
           style: TextStyle(color: Colors.grey),
         ),
         SizedBox(height: 30),
-        RoundButton(
+        RoundedButton(
           color: AppColor.AccentBlue,
           minimumWidth: 230,
           disabledColor: AppColor.AccentBlue.withOpacity(0.3),

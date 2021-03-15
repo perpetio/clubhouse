@@ -1,4 +1,4 @@
-import 'package:clubhouse/core/router.dart';
+import 'package:clubhouse/utils/router.dart';
 import 'package:clubhouse/services/authenticate.dart';
 import 'package:clubhouse/utils/app_color.dart';
 import 'package:flutter/material.dart';

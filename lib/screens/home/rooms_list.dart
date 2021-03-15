@@ -1,12 +1,13 @@
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:clubhouse/models/room.dart';
+import 'package:clubhouse/models/models.dart';
 import 'package:clubhouse/screens/home/widgets/home_bottom_sheet.dart';
 import 'package:clubhouse/screens/home/widgets/room_card.dart';
 import 'package:clubhouse/screens/room/room_screen.dart';
 import 'package:clubhouse/utils/app_color.dart';
 import 'package:clubhouse/core/data.dart';
-import 'package:clubhouse/widgets/round_button.dart';
+import 'package:clubhouse/widgets/rounded_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -18,17 +19,23 @@ class RoomsList extends StatefulWidget {
 
 class _RoomsListState extends State<RoomsList> {
   final collection = Firestore.instance.collection('rooms');
+  final FirebaseAuth auth = FirebaseAuth.instance;
 
-  RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
+  RefreshController _refreshController = RefreshController(
+    initialRefresh: false,
+  );
 
   void _onRefresh() async {
-    await Future.delayed(Duration(milliseconds: 1000));
+    await Future.delayed(
+      Duration(milliseconds: 1000),
+    );
     _refreshController.refreshCompleted();
   }
 
   void _onLoading() async {
-    await Future.delayed(Duration(milliseconds: 1000));
+    await Future.delayed(
+      Duration(milliseconds: 1000),
+    );
     _refreshController.loadComplete();
   }
 
@@ -43,7 +50,10 @@ class _RoomsListState extends State<RoomsList> {
         );
       },
       child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 10),
+        margin: const EdgeInsets.symmetric(
+          vertical: 10,
+          horizontal: 15,
+        ),
         child: RoomCard(room: room),
       ),
     );
@@ -56,7 +66,10 @@ class _RoomsListState extends State<RoomsList> {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [AppColor.LightBrown.withOpacity(0.2), AppColor.LightBrown],
+          colors: [
+            AppColor.LightBrown.withOpacity(0.2),
+            AppColor.LightBrown,
+          ],
         ),
       ),
     );
@@ -65,7 +78,7 @@ class _RoomsListState extends State<RoomsList> {
   Widget buildStartRoomButton() {
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
-      child: RoundButton(
+      child: RoundedButton(
           onPressed: () => showBottomSheet(),
           color: AppColor.AccentGreen,
           text: '+ Start a room'),
@@ -100,6 +113,13 @@ class _RoomsListState extends State<RoomsList> {
           children: [
             HomeBottomSheet(
               onButtonTap: () async {
+                await collection.add(
+                  {
+                    'title': '${myProfile.name}\'s Room',
+                    'users': [profileData],
+                    'speakerCount': 1
+                  },
+                );
                 await Permission.microphone.request();
                 Navigator.pop(context);
                 openRoom(
@@ -110,9 +130,6 @@ class _RoomsListState extends State<RoomsList> {
                     ),
                     role: ClientRole.Broadcaster,
                     channelName: 'demo');
-                await collection.add({
-                  'title': '${myProfile.name}\'s Room',
-                });
               },
             ),
           ],
@@ -126,18 +143,37 @@ class _RoomsListState extends State<RoomsList> {
     return Stack(
       alignment: Alignment.bottomCenter,
       children: [
-        SmartRefresher(
-          enablePullDown: true,
-          controller: _refreshController,
-          onRefresh: _onRefresh,
-          onLoading: _onLoading,
-          child: ListView.builder(
-            padding: const EdgeInsets.only(bottom: 80, left: 20, right: 20),
-            itemBuilder: (context, index) {
-              return buildRoomCard(rooms[index]);
-            },
-            itemCount: rooms.length,
-          ),
+        StreamBuilder<QuerySnapshot>(
+          stream: collection.snapshots(),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasError) return Text('Error: ${snapshot.error}');
+
+            return snapshot.hasData
+                ? SmartRefresher(
+                    enablePullDown: true,
+                    controller: _refreshController,
+                    onRefresh: _onRefresh,
+                    onLoading: _onLoading,
+                    child: ListView(
+                      children: snapshot.data.documents
+                          .map((DocumentSnapshot document) {
+                        return Dismissible(
+                          key: ObjectKey(document.data.keys),
+                          onDismissed: (direction) {
+                            collection.document(document.documentID).delete();
+                          },
+                          child: buildRoomCard(
+                            Room.fromJson(document),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  )
+                : Center(
+                    child: CircularProgressIndicator(),
+                  );
+          },
         ),
         buildGradientContainer(),
         buildStartRoomButton(),

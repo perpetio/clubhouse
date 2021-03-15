@@ -1,5 +1,5 @@
-import 'package:clubhouse/models/user.dart';
-import 'package:clubhouse/widgets/round_image.dart';
+import 'package:clubhouse/models/models.dart';
+import 'package:clubhouse/widgets/rounded_image.dart';
 import 'package:flutter/material.dart';
 
 class HomeAppBar extends StatelessWidget {
@@ -15,7 +15,7 @@ class HomeAppBar extends StatelessWidget {
       alignment: Alignment.topRight,
       child: GestureDetector(
         onTap: onProfileTab,
-        child: RoundImage(
+        child: RoundedImage(
           path: profile.profileImage,
           width: 40,
           height: 40,

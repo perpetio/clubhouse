@@ -1,12 +1,11 @@
 import 'package:agora_rtc_engine/rtc_engine.dart';
-import 'package:clubhouse/models/room.dart';
-import 'package:clubhouse/models/user.dart';
+import 'package:clubhouse/models/models.dart';
 import 'package:clubhouse/screens/room/widgets/room_profile.dart';
 import 'package:clubhouse/core/data.dart';
 import 'package:clubhouse/utils/app_color.dart';
-import 'package:clubhouse/utils/settings.dart';
-import 'package:clubhouse/widgets/round_button.dart';
-import 'package:clubhouse/widgets/round_image.dart';
+import 'package:clubhouse/core/settings.dart';
+import 'package:clubhouse/widgets/rounded_button.dart';
+import 'package:clubhouse/widgets/rounded_image.dart';
 import 'package:flutter/material.dart';
 
 class RoomScreen extends StatefulWidget {
@@ -42,19 +41,8 @@ class _RoomScreenState extends State<RoomScreen> {
   }
 
   Future<void> initialize() async {
-    if (APP_ID.isEmpty) {
-      setState(() {
-        _infoStrings.add(
-          'APP_ID missing, please provide your APP_ID in settings.dart',
-        );
-        _infoStrings.add('Agora Engine is not starting');
-      });
-      return;
-    }
-
     await _initAgoraRtcEngine();
     _addAgoraEventHandlers();
-    await _engine.enableWebSdkInteroperability(true);
     await _engine.joinChannel(Token, widget.channelName, null, 0);
   }
 
@@ -113,9 +101,7 @@ class _RoomScreenState extends State<RoomScreen> {
             IconButton(
               iconSize: 30,
               icon: Icon(Icons.keyboard_arrow_down),
-              onPressed: () {
-                Navigator.pop(context);
-              },
+              onPressed: () => Navigator.pop(context),
             ),
             Text(
               'All rooms',
@@ -123,11 +109,9 @@ class _RoomScreenState extends State<RoomScreen> {
             ),
             Spacer(),
             GestureDetector(
-              onTap: () {
-                Navigator.of(context)
-                    .pushNamed('/profile', arguments: myProfile);
-              },
-              child: RoundImage(
+              onTap: () => Navigator.of(context)
+                  .pushNamed('/profile', arguments: myProfile),
+              child: RoundedImage(
                 path: myProfile.profileImage,
                 width: 40,
                 height: 40,
@@ -136,45 +120,46 @@ class _RoomScreenState extends State<RoomScreen> {
           ],
         ),
       ),
-      body: Container(
-        padding: const EdgeInsets.only(
-          left: 20,
-          right: 20,
-          bottom: 20,
+      body: buildBody(),
+    );
+  }
+
+  Widget buildBody() {
+    return Container(
+      padding: const EdgeInsets.only(
+        left: 20,
+        right: 20,
+        bottom: 20,
+      ),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(30),
+          topLeft: Radius.circular(30),
         ),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topRight: Radius.circular(30),
-            topLeft: Radius.circular(30),
+      ),
+      child: Stack(
+        children: [
+          SingleChildScrollView(
+            padding: const EdgeInsets.only(bottom: 80, top: 20),
+            child: Column(
+              children: [
+                buildTitle(widget.room.title),
+                SizedBox(height: 30),
+                buildSpeakers(
+                  widget.room.users.sublist(0, widget.room.speakerCount),
+                ),
+                buildOthers(
+                  widget.room.users.sublist(widget.room.speakerCount),
+                ),
+              ],
+            ),
           ),
-        ),
-        child: Stack(
-          children: [
-            SingleChildScrollView(
-              padding: const EdgeInsets.only(
-                bottom: 80,
-                top: 20,
-              ),
-              child: Column(
-                children: [
-                  buildTitle(widget.room.title),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  buildSpeakers(
-                      widget.room.users.sublist(0, widget.room.speakerCount)),
-                  buildOthers(
-                      widget.room.users.sublist(widget.room.speakerCount)),
-                ],
-              ),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: buildBottom(context),
-            ),
-          ],
-        ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: buildBottom(context),
+          ),
+        ],
       ),
     );
   }
@@ -216,7 +201,7 @@ class _RoomScreenState extends State<RoomScreen> {
         return RoomProfile(
           user: users[index],
           isModerator: index == 0,
-          isMute: index == 3,
+          isMute: false,
           size: 80,
         );
       },
@@ -246,10 +231,7 @@ class _RoomScreenState extends State<RoomScreen> {
           ),
           itemCount: users.length,
           itemBuilder: (gc, index) {
-            return RoomProfile(
-              user: users[index],
-              size: 60,
-            );
+            return RoomProfile(user: users[index], size: 60);
           },
         ),
       ],
@@ -261,7 +243,7 @@ class _RoomScreenState extends State<RoomScreen> {
       color: Colors.white,
       child: Row(
         children: [
-          RoundButton(
+          RoundedButton(
             onPressed: () {
               Navigator.pop(context);
             },
@@ -269,32 +251,30 @@ class _RoomScreenState extends State<RoomScreen> {
             child: Text(
               '✌️ Leave quietly',
               style: TextStyle(
-                color: AppColor.AccentRed,
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
-              ),
+                  color: AppColor.AccentRed,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold),
             ),
           ),
           Spacer(),
-          RoundButton(
-            onPressed: () {},
+          RoundedButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              showModalBottomSheet(
+                isScrollControlled: true,
+                context: context,
+                builder: (context) {
+                  return RoomScreen(
+                    room: widget.room,
+                    role: ClientRole.Broadcaster,
+                    channelName: widget.channelName,
+                  );
+                },
+              );
+            },
             color: AppColor.LightGrey,
             isCircle: true,
-            child: Icon(
-              Icons.add,
-              size: 15,
-              color: Colors.black,
-            ),
-          ),
-          RoundButton(
-            onPressed: () {},
-            color: AppColor.LightGrey,
-            isCircle: true,
-            child: Icon(
-              Icons.thumb_up,
-              size: 15,
-              color: Colors.black,
-            ),
+            child: Icon(Icons.thumb_up, size: 15, color: Colors.black),
           ),
         ],
       ),

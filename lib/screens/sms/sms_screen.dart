@@ -1,6 +1,6 @@
 import 'package:clubhouse/services/authenticate.dart';
 import 'package:clubhouse/utils/app_color.dart';
-import 'package:clubhouse/widgets/round_button.dart';
+import 'package:clubhouse/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 
 class SmsScreen extends StatefulWidget {
@@ -88,7 +88,7 @@ class _SmsScreenState extends State<SmsScreen> {
     return Column(
       children: [
         SizedBox(height: 30),
-        RoundButton(
+        RoundedButton(
           color: AppColor.AccentBlue,
           minimumWidth: 230,
           disabledColor: AppColor.AccentBlue.withOpacity(0.3),

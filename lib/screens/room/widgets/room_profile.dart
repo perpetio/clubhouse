@@ -1,6 +1,6 @@
-import 'package:clubhouse/models/user.dart';
+import 'package:clubhouse/models/models.dart';
 import 'package:clubhouse/utils/app_color.dart';
-import 'package:clubhouse/widgets/round_image.dart';
+import 'package:clubhouse/widgets/rounded_image.dart';
 import 'package:flutter/material.dart';
 
 class RoomProfile extends StatelessWidget {
@@ -27,7 +27,7 @@ class RoomProfile extends StatelessWidget {
               onTap: () {
                 Navigator.of(context).pushNamed('/profile', arguments: user);
               },
-              child: RoundImage(
+              child: RoundedImage(
                 path: user.profileImage,
                 width: size,
                 height: size,

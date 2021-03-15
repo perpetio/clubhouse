@@ -1,7 +1,7 @@
 import 'package:clubhouse/core/data.dart';
 import 'package:clubhouse/utils/app_color.dart';
-import 'package:clubhouse/widgets/round_button.dart';
-import 'package:clubhouse/widgets/round_image.dart';
+import 'package:clubhouse/widgets/rounded_button.dart';
+import 'package:clubhouse/widgets/rounded_image.dart';
 import 'package:flutter/material.dart';
 
 class HomeBottomSheet extends StatefulWidget {
@@ -61,15 +61,15 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
                       children: [
                         Container(
                           padding: const EdgeInsets.only(bottom: 5),
-                          child: RoundImage(
-                            width: 80,
-                            height: 80,
+                          child: RoundedImage(
+                            width: 70,
+                            height: 70,
                             borderRadius: 20,
-                            path: lobbyBottomSheets[i]['image'],
+                            path: bottomSheetData[i]['image'],
                           ),
                         ),
                         Text(
-                          lobbyBottomSheets[i]['text'],
+                          bottomSheetData[i]['text'],
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
@@ -82,14 +82,14 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
           ),
           Divider(thickness: 1, height: 60, indent: 20, endIndent: 20),
           Text(
-            lobbyBottomSheets[selectedButtonIndex]['selectedMessage'],
+            bottomSheetData[selectedButtonIndex]['selectedMessage'],
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
           ),
           SizedBox(height: 20),
-          RoundButton(
+          RoundedButton(
             color: AppColor.AccentGreen,
             onPressed: widget.onButtonTap,
             text: '🎉 Let\'s go',

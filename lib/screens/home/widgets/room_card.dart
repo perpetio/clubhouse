@@ -1,5 +1,5 @@
-import 'package:clubhouse/models/room.dart';
-import 'package:clubhouse/widgets/round_image.dart';
+import 'package:clubhouse/models/models.dart';
+import 'package:clubhouse/widgets/rounded_image.dart';
 import 'package:flutter/material.dart';
 
 class RoomCard extends StatelessWidget {
@@ -53,13 +53,11 @@ class RoomCard extends StatelessWidget {
   Widget buildProfileImages() {
     return Stack(
       children: [
-        RoundImage(
+        RoundedImage(
           margin: const EdgeInsets.only(top: 15, left: 25),
-          path: room.users[1].profileImage,
+          path: 'assets/images/profile.png',
         ),
-        RoundImage(
-          path: room.users[0].profileImage,
-        ),
+        RoundedImage(path: 'assets/images/profile.png'),
       ],
     );
   }

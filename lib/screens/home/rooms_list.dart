@@ -1,12 +1,13 @@
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:clubhouse/models/room.dart';
+import 'package:clubhouse/models/models.dart';
 import 'package:clubhouse/screens/home/widgets/home_bottom_sheet.dart';
 import 'package:clubhouse/screens/home/widgets/room_card.dart';
 import 'package:clubhouse/screens/room/room_screen.dart';
 import 'package:clubhouse/utils/app_color.dart';
 import 'package:clubhouse/core/data.dart';
-import 'package:clubhouse/widgets/round_button.dart';
+import 'package:clubhouse/widgets/rounded_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -18,6 +19,7 @@ class RoomsList extends StatefulWidget {
 
 class _RoomsListState extends State<RoomsList> {
   final collection = Firestore.instance.collection('rooms');
+  final FirebaseAuth auth = FirebaseAuth.instance;
 
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -65,7 +67,7 @@ class _RoomsListState extends State<RoomsList> {
   Widget buildStartRoomButton() {
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
-      child: RoundButton(
+      child: RoundedButton(
           onPressed: () => showBottomSheet(),
           color: AppColor.AccentGreen,
           text: '+ Start a room'),
@@ -100,6 +102,25 @@ class _RoomsListState extends State<RoomsList> {
           children: [
             HomeBottomSheet(
               onButtonTap: () async {
+                final FirebaseUser user =
+                    await FirebaseAuth.instance.currentUser();
+                print(user);
+                await collection.add({
+                  'title': '${myProfile.name}\'s Room2',
+                  'users': [
+                    {
+                      'name': 'Bob',
+                      'username': '@bob}',
+                      'profileImage': 'assets/images/profile.png',
+                    },
+                    {
+                      'name': 'Alex',
+                      'username': '@alex}',
+                      'profileImage': 'assets/images/profile.png',
+                    },
+                  ],
+                  'speakerCount': 1
+                });
                 await Permission.microphone.request();
                 Navigator.pop(context);
                 openRoom(
@@ -110,9 +131,6 @@ class _RoomsListState extends State<RoomsList> {
                     ),
                     role: ClientRole.Broadcaster,
                     channelName: 'demo');
-                await collection.add({
-                  'title': '${myProfile.name}\'s Room',
-                });
               },
             ),
           ],
@@ -126,19 +144,46 @@ class _RoomsListState extends State<RoomsList> {
     return Stack(
       alignment: Alignment.bottomCenter,
       children: [
-        SmartRefresher(
-          enablePullDown: true,
-          controller: _refreshController,
-          onRefresh: _onRefresh,
-          onLoading: _onLoading,
-          child: ListView.builder(
-            padding: const EdgeInsets.only(bottom: 80, left: 20, right: 20),
-            itemBuilder: (context, index) {
-              return buildRoomCard(rooms[index]);
-            },
-            itemCount: rooms.length,
-          ),
+        StreamBuilder<QuerySnapshot>(
+          stream: collection.snapshots(),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasError) return Text('Error: ${snapshot.error}');
+
+            return snapshot.hasData
+                ? SmartRefresher(
+                    enablePullDown: true,
+                    controller: _refreshController,
+                    onRefresh: _onRefresh,
+                    onLoading: _onLoading,
+                    child: ListView(
+                      children: snapshot.data.documents
+                          .map((DocumentSnapshot document) {
+                        print(Room.fromJson(document));
+                        return buildRoomCard(
+                          Room.fromJson(document),
+                        );
+                      }).toList(),
+                    ),
+                  )
+                : Center(
+                    child: CircularProgressIndicator(),
+                  );
+          },
         ),
+        // SmartRefresher(
+        //   enablePullDown: true,
+        //   controller: _refreshController,
+        //   onRefresh: _onRefresh,
+        //   onLoading: _onLoading,
+        //   child: ListView.builder(
+        //     padding: const EdgeInsets.only(bottom: 80, left: 20, right: 20),
+        //     itemBuilder: (context, index) {
+        //       return buildRoomCard(rooms[index]);
+        //     },
+        //     itemCount: rooms.length,
+        //   ),
+        // ),
         buildGradientContainer(),
         buildStartRoomButton(),
       ],

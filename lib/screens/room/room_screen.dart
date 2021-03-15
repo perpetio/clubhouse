@@ -3,7 +3,7 @@ import 'package:clubhouse/models/models.dart';
 import 'package:clubhouse/screens/room/widgets/room_profile.dart';
 import 'package:clubhouse/core/data.dart';
 import 'package:clubhouse/utils/app_color.dart';
-import 'package:clubhouse/utils/settings.dart';
+import 'package:clubhouse/core/settings.dart';
 import 'package:clubhouse/widgets/rounded_button.dart';
 import 'package:clubhouse/widgets/rounded_image.dart';
 import 'package:flutter/material.dart';
@@ -109,10 +109,8 @@ class _RoomScreenState extends State<RoomScreen> {
             ),
             Spacer(),
             GestureDetector(
-              onTap: () {
-                Navigator.of(context)
-                    .pushNamed('/profile', arguments: myProfile);
-              },
+              onTap: () => Navigator.of(context)
+                  .pushNamed('/profile', arguments: myProfile),
               child: RoundedImage(
                 path: myProfile.profileImage,
                 width: 40,
@@ -143,20 +141,17 @@ class _RoomScreenState extends State<RoomScreen> {
       child: Stack(
         children: [
           SingleChildScrollView(
-            padding: const EdgeInsets.only(
-              bottom: 80,
-              top: 20,
-            ),
+            padding: const EdgeInsets.only(bottom: 80, top: 20),
             child: Column(
               children: [
                 buildTitle(widget.room.title),
-                SizedBox(
-                  height: 30,
-                ),
+                SizedBox(height: 30),
                 buildSpeakers(
-                    widget.room.users.sublist(0, widget.room.speakerCount)),
+                  widget.room.users.sublist(0, widget.room.speakerCount),
+                ),
                 buildOthers(
-                    widget.room.users.sublist(widget.room.speakerCount)),
+                  widget.room.users.sublist(widget.room.speakerCount),
+                ),
               ],
             ),
           ),
@@ -206,7 +201,7 @@ class _RoomScreenState extends State<RoomScreen> {
         return RoomProfile(
           user: users[index],
           isModerator: index == 0,
-          isMute: index == 3,
+          isMute: false,
           size: 80,
         );
       },
@@ -236,10 +231,7 @@ class _RoomScreenState extends State<RoomScreen> {
           ),
           itemCount: users.length,
           itemBuilder: (gc, index) {
-            return RoomProfile(
-              user: users[index],
-              size: 60,
-            );
+            return RoomProfile(user: users[index], size: 60);
           },
         ),
       ],
@@ -259,32 +251,30 @@ class _RoomScreenState extends State<RoomScreen> {
             child: Text(
               '✌️ Leave quietly',
               style: TextStyle(
-                color: AppColor.AccentRed,
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
-              ),
+                  color: AppColor.AccentRed,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold),
             ),
           ),
           Spacer(),
           RoundedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pop();
+              showModalBottomSheet(
+                isScrollControlled: true,
+                context: context,
+                builder: (context) {
+                  return RoomScreen(
+                    room: widget.room,
+                    role: ClientRole.Broadcaster,
+                    channelName: widget.channelName,
+                  );
+                },
+              );
+            },
             color: AppColor.LightGrey,
             isCircle: true,
-            child: Icon(
-              Icons.add,
-              size: 15,
-              color: Colors.black,
-            ),
-          ),
-          RoundedButton(
-            onPressed: () {},
-            color: AppColor.LightGrey,
-            isCircle: true,
-            child: Icon(
-              Icons.thumb_up,
-              size: 15,
-              color: Colors.black,
-            ),
+            child: Icon(Icons.thumb_up, size: 15, color: Colors.black),
           ),
         ],
       ),

@@ -1,4 +1,4 @@
-import 'package:clubhouse/core/router.dart';
+import 'package:clubhouse/utils/router.dart';
 import 'package:clubhouse/models/models.dart';
 import 'package:clubhouse/services/authenticate.dart';
 import 'package:clubhouse/core/data.dart';
@@ -65,7 +65,7 @@ class ProfileScreen extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 20),
           child: Text(
-            dummyText,
+            profileText,
             style: TextStyle(fontSize: 15),
           ),
         ),

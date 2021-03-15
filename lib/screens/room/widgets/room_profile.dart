@@ -13,7 +13,7 @@ class RoomProfile extends StatelessWidget {
       {Key key,
       this.user,
       this.size,
-      this.isMute = false,
+      this.isMute = true,
       this.isModerator = false})
       : super(key: key);
 
@@ -24,25 +24,24 @@ class RoomProfile extends StatelessWidget {
         Stack(
           children: [
             GestureDetector(
-              onTap: () {
-                Navigator.of(context).pushNamed('/profile', arguments: user);
-              },
+              onTap: () => Navigator.of(context).pushNamed(
+                '/profile',
+                arguments: user,
+              ),
               child: RoundedImage(
                 path: user.profileImage,
                 width: size,
                 height: size,
               ),
             ),
-            buildMuteBadge(isMute),
+            buildMute(isMute),
           ],
         ),
-        SizedBox(
-          height: 10,
-        ),
+        SizedBox(height: 10),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            buildModeratorBadge(isModerator),
+            buildModerator(isModerator),
             Text(
               user.name.split(' ')[0],
               overflow: TextOverflow.ellipsis,
@@ -57,7 +56,7 @@ class RoomProfile extends StatelessWidget {
     );
   }
 
-  Widget buildModeratorBadge(bool isModerator) {
+  Widget buildModerator(bool isModerator) {
     return isModerator
         ? Container(
             margin: const EdgeInsets.only(right: 5),
@@ -65,16 +64,12 @@ class RoomProfile extends StatelessWidget {
               color: AppColor.AccentGreen,
               borderRadius: BorderRadius.circular(30),
             ),
-            child: Icon(
-              Icons.star,
-              color: Colors.white,
-              size: 12,
-            ),
+            child: Icon(Icons.star, color: Colors.white, size: 12),
           )
         : Container();
   }
 
-  Widget buildMuteBadge(bool isMute) {
+  Widget buildMute(bool isMute) {
     return Positioned(
       right: 0,
       bottom: 0,
@@ -93,36 +88,6 @@ class RoomProfile extends StatelessWidget {
                 ],
               ),
               child: Icon(Icons.mic_off),
-            )
-          : Container(),
-    );
-  }
-
-  Widget buildNewBadge(bool isNewUser) {
-    return Positioned(
-      left: 0,
-      bottom: 0,
-      child: isNewUser
-          ? Container(
-              width: 25,
-              height: 25,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(50),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    offset: Offset(0, 1),
-                  )
-                ],
-              ),
-              child: Text(
-                '🎉',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 18,
-                ),
-              ),
             )
           : Container(),
     );

@@ -1,14 +1,17 @@
 import 'package:clubhouse/models/models.dart';
 
-String dummyText = 'What do you do to protect the environment? ❤';
+String profileText = 'What do you do to protect the environment? ❤';
 
-User myProfile = User.fromJson(
-  {
-    'name': 'Nick Edmands',
-    'username': '@dog',
-    'profileImage': 'assets/images/profile.png',
-  },
-);
+// MyProfile
+Map profileData = {
+  'name': 'Nick Edmands',
+  'username': '@nick',
+  'profileImage': 'assets/images/profile.png',
+};
+
+User myProfile = User.fromJson(profileData);
+
+// Room
 
 List bottomSheetData = [
   {

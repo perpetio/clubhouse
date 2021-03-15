@@ -21,16 +21,21 @@ class _RoomsListState extends State<RoomsList> {
   final collection = Firestore.instance.collection('rooms');
   final FirebaseAuth auth = FirebaseAuth.instance;
 
-  RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
+  RefreshController _refreshController = RefreshController(
+    initialRefresh: false,
+  );
 
   void _onRefresh() async {
-    await Future.delayed(Duration(milliseconds: 1000));
+    await Future.delayed(
+      Duration(milliseconds: 1000),
+    );
     _refreshController.refreshCompleted();
   }
 
   void _onLoading() async {
-    await Future.delayed(Duration(milliseconds: 1000));
+    await Future.delayed(
+      Duration(milliseconds: 1000),
+    );
     _refreshController.loadComplete();
   }
 
@@ -45,7 +50,10 @@ class _RoomsListState extends State<RoomsList> {
         );
       },
       child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 10),
+        margin: const EdgeInsets.symmetric(
+          vertical: 10,
+          horizontal: 15,
+        ),
         child: RoomCard(room: room),
       ),
     );
@@ -58,7 +66,10 @@ class _RoomsListState extends State<RoomsList> {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [AppColor.LightBrown.withOpacity(0.2), AppColor.LightBrown],
+          colors: [
+            AppColor.LightBrown.withOpacity(0.2),
+            AppColor.LightBrown,
+          ],
         ),
       ),
     );
@@ -102,25 +113,13 @@ class _RoomsListState extends State<RoomsList> {
           children: [
             HomeBottomSheet(
               onButtonTap: () async {
-                final FirebaseUser user =
-                    await FirebaseAuth.instance.currentUser();
-                print(user);
-                await collection.add({
-                  'title': '${myProfile.name}\'s Room2',
-                  'users': [
-                    {
-                      'name': 'Bob',
-                      'username': '@bob}',
-                      'profileImage': 'assets/images/profile.png',
-                    },
-                    {
-                      'name': 'Alex',
-                      'username': '@alex}',
-                      'profileImage': 'assets/images/profile.png',
-                    },
-                  ],
-                  'speakerCount': 1
-                });
+                await collection.add(
+                  {
+                    'title': '${myProfile.name}\'s Room',
+                    'users': [profileData],
+                    'speakerCount': 1
+                  },
+                );
                 await Permission.microphone.request();
                 Navigator.pop(context);
                 openRoom(
@@ -159,9 +158,14 @@ class _RoomsListState extends State<RoomsList> {
                     child: ListView(
                       children: snapshot.data.documents
                           .map((DocumentSnapshot document) {
-                        print(Room.fromJson(document));
-                        return buildRoomCard(
-                          Room.fromJson(document),
+                        return Dismissible(
+                          key: ObjectKey(document.data.keys),
+                          onDismissed: (direction) {
+                            collection.document(document.documentID).delete();
+                          },
+                          child: buildRoomCard(
+                            Room.fromJson(document),
+                          ),
                         );
                       }).toList(),
                     ),
@@ -171,19 +175,6 @@ class _RoomsListState extends State<RoomsList> {
                   );
           },
         ),
-        // SmartRefresher(
-        //   enablePullDown: true,
-        //   controller: _refreshController,
-        //   onRefresh: _onRefresh,
-        //   onLoading: _onLoading,
-        //   child: ListView.builder(
-        //     padding: const EdgeInsets.only(bottom: 80, left: 20, right: 20),
-        //     itemBuilder: (context, index) {
-        //       return buildRoomCard(rooms[index]);
-        //     },
-        //     itemCount: rooms.length,
-        //   ),
-        // ),
         buildGradientContainer(),
         buildStartRoomButton(),
       ],

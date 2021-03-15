@@ -63,12 +63,10 @@ class RoomCard extends StatelessWidget {
   }
 
   Widget buildUserList() {
-    var len = room.users.length > 4 ? 4 : room.users.length;
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        for (var i = 0; i < len; i++)
+        for (var i = 0; i < room.users.length; i++)
           Container(
             child: Row(
               children: [

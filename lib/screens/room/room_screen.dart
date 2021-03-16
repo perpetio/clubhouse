@@ -8,23 +8,29 @@ import 'package:clubhouse/widgets/rounded_button.dart';
 import 'package:clubhouse/widgets/rounded_image.dart';
 import 'package:flutter/material.dart';
 
+import '../../core/settings.dart';
+
 class RoomScreen extends StatefulWidget {
   final Room room;
-  final String channelName;
   final ClientRole role;
 
-  const RoomScreen({Key key, this.room, this.channelName, this.role})
-      : super(key: key);
+  const RoomScreen({Key key, this.room, this.role}) : super(key: key);
 
   @override
   _RoomScreenState createState() => _RoomScreenState();
 }
 
 class _RoomScreenState extends State<RoomScreen> {
-  final _users = <int>[];
-  final _infoStrings = <String>[];
+  final List _users = [];
+
   bool muted = false;
   RtcEngine _engine;
+
+  @override
+  void initState() {
+    super.initState();
+    initialize();
+  }
 
   @override
   void dispose() {
@@ -34,16 +40,10 @@ class _RoomScreenState extends State<RoomScreen> {
     super.dispose();
   }
 
-  @override
-  void initState() {
-    super.initState();
-    initialize();
-  }
-
   Future<void> initialize() async {
     await _initAgoraRtcEngine();
     _addAgoraEventHandlers();
-    await _engine.joinChannel(Token, widget.channelName, null, 0);
+    await _engine.joinChannel(Token, channelName, null, 0);
   }
 
   Future<void> _initAgoraRtcEngine() async {
@@ -57,34 +57,22 @@ class _RoomScreenState extends State<RoomScreen> {
     _engine.setEventHandler(RtcEngineEventHandler(
       error: (code) {
         setState(() {
-          final info = 'onError: $code';
-          _infoStrings.add(info);
+          print('onError: $code');
         });
       },
       joinChannelSuccess: (channel, uid, elapsed) {
-        setState(() {
-          final info = 'onJoinChannel: $channel, uid: $uid';
-          _infoStrings.add(info);
-        });
+        print('onJoinChannel: $channel, uid: $uid');
       },
       leaveChannel: (stats) {
         setState(() {
-          _infoStrings.add('onLeaveChannel');
+          print('onLeaveChannel');
           _users.clear();
         });
       },
       userJoined: (uid, elapsed) {
+        print('userJoined: $uid');
         setState(() {
-          final info = 'userJoined: $uid';
-          _infoStrings.add(info);
           _users.add(uid);
-        });
-      },
-      userOffline: (uid, elapsed) {
-        setState(() {
-          final info = 'userOffline: $uid';
-          _infoStrings.add(info);
-          _users.remove(uid);
         });
       },
     ));
@@ -267,7 +255,6 @@ class _RoomScreenState extends State<RoomScreen> {
                   return RoomScreen(
                     room: widget.room,
                     role: ClientRole.Broadcaster,
-                    channelName: widget.channelName,
                   );
                 },
               );

@@ -60,4 +60,7 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.google.firebase:firebase-core:17.0.0'
 }
+
+apply plugin: 'com.google.gms.google-services'

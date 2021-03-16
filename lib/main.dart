@@ -3,9 +3,7 @@ import 'package:clubhouse/services/authenticate.dart';
 import 'package:clubhouse/utils/app_color.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MyApp());
-}
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override

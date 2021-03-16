@@ -46,7 +46,6 @@ class _RoomsListState extends State<RoomsList> {
         openRoom(
           room: room,
           role: ClientRole.Audience,
-          channelName: 'demo',
         );
       },
       child: Container(
@@ -85,7 +84,7 @@ class _RoomsListState extends State<RoomsList> {
     );
   }
 
-  openRoom({Room room, ClientRole role, String channelName}) {
+  openRoom({Room room, ClientRole role}) {
     showModalBottomSheet(
       isScrollControlled: true,
       context: context,
@@ -93,7 +92,6 @@ class _RoomsListState extends State<RoomsList> {
         return RoomScreen(
           room: room,
           role: role,
-          channelName: channelName,
         );
       },
     );
@@ -123,13 +121,13 @@ class _RoomsListState extends State<RoomsList> {
                 await Permission.microphone.request();
                 Navigator.pop(context);
                 openRoom(
-                    room: Room(
-                      title: '${myProfile.name}\'s Room',
-                      users: [myProfile],
-                      speakerCount: 1,
-                    ),
-                    role: ClientRole.Broadcaster,
-                    channelName: 'demo');
+                  room: Room(
+                    title: '${myProfile.name}\'s Room',
+                    users: [myProfile],
+                    speakerCount: 1,
+                  ),
+                  role: ClientRole.Broadcaster,
+                );
               },
             ),
           ],

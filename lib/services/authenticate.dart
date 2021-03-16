@@ -1,6 +1,6 @@
+import 'package:clubhouse/screens/phone/phone_screen.dart';
 import 'package:clubhouse/utils/router.dart';
 import 'package:clubhouse/screens/home/home_screen.dart';
-import 'package:clubhouse/screens/phone_number/phone_number_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +12,7 @@ class AuthService {
         if (snapshot.hasData) {
           return HomeScreen();
         } else {
-          return PhoneNumberScreen();
+          return PhoneScreen();
         }
       },
     );

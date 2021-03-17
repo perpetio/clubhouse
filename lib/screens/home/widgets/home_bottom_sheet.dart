@@ -51,10 +51,7 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
             ),
           ),
           SizedBox(height: 20),
-          RoundedButton(
-              color: AppColor.AccentGreen,
-              onPressed: widget.onButtonTap,
-              text: '🎉 Let\'s go')
+          buildLestGoButton()
         ],
       ),
     );
@@ -100,5 +97,12 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
         ),
       ),
     );
+  }
+
+  Widget buildLestGoButton() {
+    return RoundedButton(
+        color: AppColor.AccentGreen,
+        onPressed: widget.onButtonTap,
+        text: '🎉 Let\'s go');
   }
 }

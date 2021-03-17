@@ -7,7 +7,6 @@ import 'package:clubhouse/core/settings.dart';
 import 'package:clubhouse/widgets/rounded_button.dart';
 import 'package:clubhouse/widgets/rounded_image.dart';
 import 'package:flutter/material.dart';
-
 import '../../core/settings.dart';
 
 class RoomScreen extends StatefulWidget {

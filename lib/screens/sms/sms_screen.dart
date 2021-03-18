@@ -36,7 +36,7 @@ class _SmsScreenState extends State<SmsScreen> {
 
   Widget title() {
     return Padding(
-      padding: const EdgeInsets.only(left: 90.0, right: 90.0),
+      padding: const EdgeInsets.only(left: 80.0, right: 80.0),
       child: Text(
         'Enter the code we just texted you',
         style: TextStyle(fontSize: 25),

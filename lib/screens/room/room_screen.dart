@@ -260,7 +260,7 @@ class _RoomScreenState extends State<RoomScreen> {
             },
             color: AppColor.LightGrey,
             isCircle: true,
-            child: Icon(Icons.thumb_up, size: 15, color: Colors.black),
+            child: Icon(Icons.hail, size: 15, color: Colors.black),
           ),
         ],
       ),

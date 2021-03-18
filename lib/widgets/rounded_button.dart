@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+/// Global widget that depicts a custom rounded button
+/// Use to make almost all the buttons in app
+
 class RoundedButton extends StatelessWidget {
   final String text;
   final double fontSize;

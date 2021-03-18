@@ -4,12 +4,17 @@ import 'package:clubhouse/screens/profile/profile_screen.dart';
 import 'package:clubhouse/screens/sms/sms_screen.dart';
 import 'package:flutter/material.dart';
 
+/// Generator callback allowing the app to be navigated to a named route.
+
+/// Static class contains Strings of all named routes
 class Routers {
   static const String home = '/home';
   static const String phone = '/phone';
   static const String sms = '/sms';
   static const String profile = '/profile';
 }
+
+///Return MaterialPageRoute depends of route name
 
 // ignore: missing_return
 Route<dynamic> router(routeSetting) {

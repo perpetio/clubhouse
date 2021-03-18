@@ -9,6 +9,9 @@ import 'package:clubhouse/widgets/rounded_image.dart';
 import 'package:flutter/material.dart';
 import '../../core/settings.dart';
 
+/// Detail screen of selected room
+/// Initialize Agora SDK
+
 class RoomScreen extends StatefulWidget {
   final Room room;
   final ClientRole role;
@@ -28,17 +31,21 @@ class _RoomScreenState extends State<RoomScreen> {
   @override
   void initState() {
     super.initState();
+    // Initialize Agora SDK
     initialize();
   }
 
   @override
   void dispose() {
+    // Clear users
     _users.clear();
+    // Destroy sdk
     _engine.leaveChannel();
     _engine.destroy();
     super.dispose();
   }
 
+  /// Create Agora SDK instance and initialize
   Future<void> initialize() async {
     await _initAgoraRtcEngine();
     _addAgoraEventHandlers();
@@ -51,6 +58,8 @@ class _RoomScreenState extends State<RoomScreen> {
     await _engine.setChannelProfile(ChannelProfile.LiveBroadcasting);
     await _engine.setClientRole(widget.role);
   }
+
+  /// Add Agora event handlers
 
   void _addAgoraEventHandlers() {
     _engine.setEventHandler(RtcEngineEventHandler(

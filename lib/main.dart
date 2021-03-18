@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
 
+/// This widget is the root of application
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

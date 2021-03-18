@@ -67,4 +67,4 @@ $ git clone https://github.com/perpetio/clubhouse.git
 
  ```
 
-#### 5. Run the project using `flutter run` or using your IDE's tools.
+#### 6. Run the project using `flutter run` or using your IDE's tools.

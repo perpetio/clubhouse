@@ -3,6 +3,8 @@ import 'package:clubhouse/utils/app_color.dart';
 import 'package:clubhouse/widgets/rounded_image.dart';
 import 'package:flutter/material.dart';
 
+/// Shows the user's account icon in the room
+
 class UserProfile extends StatelessWidget {
   final User user;
   final double size;
@@ -56,6 +58,8 @@ class UserProfile extends StatelessWidget {
     );
   }
 
+  ///Return if user is moderator
+
   Widget moderator(bool isModerator) {
     return isModerator
         ? Container(
@@ -68,6 +72,8 @@ class UserProfile extends StatelessWidget {
           )
         : Container();
   }
+
+  ///Return if user is mute
 
   Widget mute(bool isMute) {
     return Positioned(

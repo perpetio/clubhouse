@@ -12,17 +12,23 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+/// Fetch Rooms list from `Firestore`
+/// Use `pull_to_refresh` plugin, which provides pull-up load and pull-down refresh for room list
+
 class RoomsList extends StatefulWidget {
   @override
   _RoomsListState createState() => _RoomsListState();
 }
 
 class _RoomsListState extends State<RoomsList> {
+  // Setting reference to 'rooms' collection
   final collection = Firestore.instance.collection('rooms');
   final FirebaseAuth auth = FirebaseAuth.instance;
   RefreshController _refreshController = RefreshController(
     initialRefresh: false,
   );
+
+  /// Method for refreshing list
 
   void _onRefresh() async {
     await Future.delayed(
@@ -30,6 +36,8 @@ class _RoomsListState extends State<RoomsList> {
     );
     _refreshController.refreshCompleted();
   }
+
+  /// Method for loading list
 
   void _onLoading() async {
     await Future.delayed(
@@ -41,13 +49,16 @@ class _RoomsListState extends State<RoomsList> {
   Widget roomCard(Room room) {
     return GestureDetector(
       onTap: () async {
+        // Launch user microphone permission
         await Permission.microphone.request();
+        // Open BottomSheet dialog
         showModalBottomSheet(
           isScrollControlled: true,
           context: context,
           builder: (context) {
             return RoomScreen(
               room: room,
+              // Pass user role
               role: ClientRole.Audience,
             );
           },
@@ -62,6 +73,8 @@ class _RoomsListState extends State<RoomsList> {
       ),
     );
   }
+
+  /// Adds a smoothed blur at the bottom of the screen when scroll the list
 
   Widget gradientContainer() {
     return Container(
@@ -97,6 +110,7 @@ class _RoomsListState extends State<RoomsList> {
                   children: [
                     HomeBottomSheet(
                       onButtonTap: () async {
+                        // Add new data to Firestore collection
                         await collection.add(
                           {
                             'title': '${myProfile.name}\'s Room',
@@ -104,8 +118,10 @@ class _RoomsListState extends State<RoomsList> {
                             'speakerCount': 1
                           },
                         );
+                        // Launch user microphone permission
                         await Permission.microphone.request();
                         Navigator.pop(context);
+                        // Open BottomSheet dialog
                         showModalBottomSheet(
                           isScrollControlled: true,
                           context: context,
@@ -116,6 +132,7 @@ class _RoomsListState extends State<RoomsList> {
                                 users: [myProfile],
                                 speakerCount: 1,
                               ),
+                              // Pass user role
                               role: ClientRole.Broadcaster,
                             );
                           },
@@ -137,10 +154,12 @@ class _RoomsListState extends State<RoomsList> {
     return Stack(
       alignment: Alignment.bottomCenter,
       children: [
+        // Making a StreamBuilder to listen to changes in real time
         StreamBuilder<QuerySnapshot>(
           stream: collection.snapshots(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            // Handling errors from firebase
             if (snapshot.hasError) return Text('Error: ${snapshot.error}');
 
             return snapshot.hasData
@@ -164,6 +183,7 @@ class _RoomsListState extends State<RoomsList> {
                       }).toList(),
                     ),
                   )
+                // Display if still loading data
                 : Center(
                     child: CircularProgressIndicator(),
                   );

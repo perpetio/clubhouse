@@ -6,6 +6,9 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+/// The screen for entering a phone number
+/// Made up of three main components: title, form, bottom part
+
 class PhoneScreen extends StatefulWidget {
   @override
   _PhoneScreenState createState() => _PhoneScreenState();
@@ -37,11 +40,25 @@ class _PhoneScreenState extends State<PhoneScreen> {
     };
 
     await FirebaseAuth.instance.verifyPhoneNumber(
+
+        /// Make sure to prefix with your country code
         phoneNumber: phoneNumber,
+
+        ///No duplicated SMS will be sent out upon re-entry (before timeout).
         timeout: const Duration(seconds: 5),
+
+        /// If the SIM (with phoneNumber) is in the current device this function is called.
+        /// This function gives `AuthCredential`. Moreover `login` function can be called from this callback
+        /// When this function is called there is no need to enter the OTP, you can click on Login button to sigin directly as the device is now verified
         verificationCompleted: verified,
+
+        /// Called when the verification is failed
         verificationFailed: verificationfailed,
+
+        /// This is called after the OTP is sent. Gives a `verificationId` and `code`
         codeSent: smsSent,
+
+        /// After automatic code retrival `tmeout` this function is called
         codeAutoRetrievalTimeout: autoTimeout);
   }
 

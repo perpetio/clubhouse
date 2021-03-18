@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+/// Global widget that depicts a custom rounded user icon
+/// Use for creating user profile images
+
 class RoundedImage extends StatelessWidget {
   final String url;
   final String path;

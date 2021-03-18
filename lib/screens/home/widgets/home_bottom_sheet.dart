@@ -4,6 +4,8 @@ import 'package:clubhouse/widgets/rounded_button.dart';
 import 'package:clubhouse/widgets/rounded_image.dart';
 import 'package:flutter/material.dart';
 
+/// Open when the user wants to create a new room.
+
 class HomeBottomSheet extends StatefulWidget {
   final Function onButtonTap;
 
@@ -34,6 +36,7 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
+              // List of 3 rooms: Open, Social, and Closed
               for (var i = 0, len = 3; i < len; i++) roomCard(i),
             ],
           ),

@@ -1,3 +1,4 @@
+/// Room model
 class Room {
   final String title;
   final List<User> users;
@@ -24,6 +25,7 @@ class Room {
   }
 }
 
+/// User model
 class User {
   final String name;
   final String username;

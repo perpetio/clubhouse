@@ -5,6 +5,8 @@ import 'package:clubhouse/core/data.dart';
 import 'package:clubhouse/widgets/rounded_image.dart';
 import 'package:flutter/material.dart';
 
+/// Contain information about current user profile
+
 class ProfileScreen extends StatelessWidget {
   final User profile;
 
@@ -15,6 +17,7 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         actions: [
+          // Button that logout user
           IconButton(
             icon: Icon(Icons.logout),
             onPressed: () {

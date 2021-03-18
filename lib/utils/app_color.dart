@@ -1,5 +1,7 @@
 import 'package:flutter/painting.dart';
 
+///static class contains all App colors
+
 class AppColor {
   static const LightBrown = Color(0xfff1efe5);
   static const LightGreen = Color(0xffE8FCD9);

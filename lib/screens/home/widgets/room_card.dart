@@ -2,6 +2,8 @@ import 'package:clubhouse/models/models.dart';
 import 'package:clubhouse/widgets/rounded_image.dart';
 import 'package:flutter/material.dart';
 
+/// Each element that fetch from Firestore return the RoomCard
+
 class RoomCard extends StatelessWidget {
   final Room room;
 

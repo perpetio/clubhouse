@@ -2,7 +2,7 @@ import 'package:clubhouse/models/models.dart';
 
 String profileText = 'What do you do to protect the environment? ❤';
 
-// MyProfile
+// Default profile data
 Map profileData = {
   'name': 'Nick Edmands',
   'username': '@nick',
@@ -11,8 +11,7 @@ Map profileData = {
 
 User myProfile = User.fromJson(profileData);
 
-// Room
-
+/// Data for 3 rooms in BottomSheet
 List bottomSheetData = [
   {
     'image': 'assets/images/open.png',

@@ -18,8 +18,8 @@ dependencies:
   firebase_auth:
   firebase_core: ^0.4.4
   cloud_firestore: ^0.12.9
-  country_code_picker: ^1.7.0
-  pull_to_refresh: 1.6.3
+  country_code_picker: ^2.0.1
+  pull_to_refresh: ^1.6.4
 
 dev_dependencies:
   flutter_test:

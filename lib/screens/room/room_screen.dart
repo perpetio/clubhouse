@@ -1,13 +1,12 @@
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:clubhouse/models/models.dart';
-import 'package:clubhouse/screens/room/widgets/room_profile.dart';
+import 'package:clubhouse/screens/room/widgets/user_profile.dart';
 import 'package:clubhouse/core/data.dart';
 import 'package:clubhouse/utils/app_color.dart';
 import 'package:clubhouse/core/settings.dart';
 import 'package:clubhouse/widgets/rounded_button.dart';
 import 'package:clubhouse/widgets/rounded_image.dart';
 import 'package:flutter/material.dart';
-
 import '../../core/settings.dart';
 
 class RoomScreen extends StatefulWidget {
@@ -108,11 +107,11 @@ class _RoomScreenState extends State<RoomScreen> {
           ],
         ),
       ),
-      body: buildBody(),
+      body: body(),
     );
   }
 
-  Widget buildBody() {
+  Widget body() {
     return Container(
       padding: const EdgeInsets.only(
         left: 20,
@@ -132,12 +131,12 @@ class _RoomScreenState extends State<RoomScreen> {
             padding: const EdgeInsets.only(bottom: 80, top: 20),
             child: Column(
               children: [
-                buildTitle(widget.room.title),
+                title(widget.room.title),
                 SizedBox(height: 30),
-                buildSpeakers(
+                speakers(
                   widget.room.users.sublist(0, widget.room.speakerCount),
                 ),
-                buildOthers(
+                others(
                   widget.room.users.sublist(widget.room.speakerCount),
                 ),
               ],
@@ -145,14 +144,14 @@ class _RoomScreenState extends State<RoomScreen> {
           ),
           Align(
             alignment: Alignment.bottomCenter,
-            child: buildBottom(context),
+            child: bottom(context),
           ),
         ],
       ),
     );
   }
 
-  Widget buildTitle(String title) {
+  Widget title(String title) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -177,7 +176,7 @@ class _RoomScreenState extends State<RoomScreen> {
     );
   }
 
-  Widget buildSpeakers(List<User> users) {
+  Widget speakers(List<User> users) {
     return GridView.builder(
       shrinkWrap: true,
       physics: ScrollPhysics(),
@@ -186,7 +185,7 @@ class _RoomScreenState extends State<RoomScreen> {
       ),
       itemCount: users.length,
       itemBuilder: (gc, index) {
-        return RoomProfile(
+        return UserProfile(
           user: users[index],
           isModerator: index == 0,
           isMute: false,
@@ -196,7 +195,7 @@ class _RoomScreenState extends State<RoomScreen> {
     );
   }
 
-  Widget buildOthers(List<User> users) {
+  Widget others(List<User> users) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -219,14 +218,14 @@ class _RoomScreenState extends State<RoomScreen> {
           ),
           itemCount: users.length,
           itemBuilder: (gc, index) {
-            return RoomProfile(user: users[index], size: 60);
+            return UserProfile(user: users[index], size: 60);
           },
         ),
       ],
     );
   }
 
-  Widget buildBottom(BuildContext context) {
+  Widget bottom(BuildContext context) {
     return Container(
       color: Colors.white,
       child: Row(

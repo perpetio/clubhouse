@@ -20,7 +20,6 @@ class RoomsList extends StatefulWidget {
 class _RoomsListState extends State<RoomsList> {
   final collection = Firestore.instance.collection('rooms');
   final FirebaseAuth auth = FirebaseAuth.instance;
-
   RefreshController _refreshController = RefreshController(
     initialRefresh: false,
   );
@@ -39,13 +38,19 @@ class _RoomsListState extends State<RoomsList> {
     _refreshController.loadComplete();
   }
 
-  Widget buildRoomCard(Room room) {
+  Widget roomCard(Room room) {
     return GestureDetector(
       onTap: () async {
         await Permission.microphone.request();
-        openRoom(
-          room: room,
-          role: ClientRole.Audience,
+        showModalBottomSheet(
+          isScrollControlled: true,
+          context: context,
+          builder: (context) {
+            return RoomScreen(
+              room: room,
+              role: ClientRole.Audience,
+            );
+          },
         );
       },
       child: Container(
@@ -58,7 +63,7 @@ class _RoomsListState extends State<RoomsList> {
     );
   }
 
-  Widget buildGradientContainer() {
+  Widget gradientContainer() {
     return Container(
       height: 50,
       decoration: BoxDecoration(
@@ -74,65 +79,56 @@ class _RoomsListState extends State<RoomsList> {
     );
   }
 
-  Widget buildStartRoomButton() {
+  Widget startRoomButton() {
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
       child: RoundedButton(
-          onPressed: () => showBottomSheet(),
-          color: AppColor.AccentGreen,
-          text: '+ Start a room'),
-    );
-  }
-
-  openRoom({Room room, ClientRole role}) {
-    showModalBottomSheet(
-      isScrollControlled: true,
-      context: context,
-      builder: (context) {
-        return RoomScreen(
-          room: room,
-          role: role,
-        );
-      },
-    );
-  }
-
-  showBottomSheet() {
-    showModalBottomSheet(
-      context: context,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(15),
-          topRight: Radius.circular(15),
-        ),
-      ),
-      builder: (context) {
-        return Wrap(
-          children: [
-            HomeBottomSheet(
-              onButtonTap: () async {
-                await collection.add(
-                  {
-                    'title': '${myProfile.name}\'s Room',
-                    'users': [profileData],
-                    'speakerCount': 1
-                  },
-                );
-                await Permission.microphone.request();
-                Navigator.pop(context);
-                openRoom(
-                  room: Room(
-                    title: '${myProfile.name}\'s Room',
-                    users: [myProfile],
-                    speakerCount: 1,
-                  ),
-                  role: ClientRole.Broadcaster,
+          onPressed: () {
+            showModalBottomSheet(
+              context: context,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(15),
+                  topRight: Radius.circular(15),
+                ),
+              ),
+              builder: (context) {
+                return Wrap(
+                  children: [
+                    HomeBottomSheet(
+                      onButtonTap: () async {
+                        await collection.add(
+                          {
+                            'title': '${myProfile.name}\'s Room',
+                            'users': [profileData],
+                            'speakerCount': 1
+                          },
+                        );
+                        await Permission.microphone.request();
+                        Navigator.pop(context);
+                        showModalBottomSheet(
+                          isScrollControlled: true,
+                          context: context,
+                          builder: (context) {
+                            return RoomScreen(
+                              room: Room(
+                                title: '${myProfile.name}\'s Room',
+                                users: [myProfile],
+                                speakerCount: 1,
+                              ),
+                              role: ClientRole.Broadcaster,
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ],
                 );
               },
-            ),
-          ],
-        );
-      },
+            );
+          },
+          color: AppColor.AccentGreen,
+          text: '+ Start a room'),
     );
   }
 
@@ -161,7 +157,7 @@ class _RoomsListState extends State<RoomsList> {
                           onDismissed: (direction) {
                             collection.document(document.documentID).delete();
                           },
-                          child: buildRoomCard(
+                          child: roomCard(
                             Room.fromJson(document),
                           ),
                         );
@@ -173,8 +169,8 @@ class _RoomsListState extends State<RoomsList> {
                   );
           },
         ),
-        buildGradientContainer(),
-        buildStartRoomButton(),
+        gradientContainer(),
+        startRoomButton(),
       ],
     );
   }

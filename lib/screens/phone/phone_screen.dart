@@ -54,25 +54,25 @@ class _PhoneScreenState extends State<PhoneScreen> {
         padding: const EdgeInsets.only(top: 30, bottom: 60),
         child: Column(
           children: [
-            buildTitle(),
+            title(),
             SizedBox(height: 50),
-            buildForm(),
+            form(),
             Spacer(),
-            buildBottom(),
+            bottom(),
           ],
         ),
       ),
     );
   }
 
-  Widget buildTitle() {
+  Widget title() {
     return Text(
       'Enter your phone #',
       style: TextStyle(fontSize: 25),
     );
   }
 
-  Widget buildForm() {
+  Widget form() {
     return Container(
       width: 330,
       decoration: BoxDecoration(
@@ -115,7 +115,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
     );
   }
 
-  Widget buildBottom() {
+  Widget bottom() {
     return Column(
       children: [
         Text(

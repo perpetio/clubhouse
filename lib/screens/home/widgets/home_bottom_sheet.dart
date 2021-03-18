@@ -19,12 +19,7 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(
-        top: 10,
-        right: 20,
-        left: 20,
-        bottom: 20,
-      ),
+      padding: const EdgeInsets.only(top: 10, right: 20, left: 20, bottom: 20),
       child: Column(
         children: [
           Container(
@@ -39,7 +34,7 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              for (var i = 0, len = 3; i < len; i++) buildRoomCard(i),
+              for (var i = 0, len = 3; i < len; i++) roomCard(i),
             ],
           ),
           Divider(thickness: 1, height: 60, indent: 20, endIndent: 20),
@@ -51,13 +46,13 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
             ),
           ),
           SizedBox(height: 20),
-          buildLestGoButton()
+          letsGoButton()
         ],
       ),
     );
   }
 
-  Widget buildRoomCard(int i) {
+  Widget roomCard(int i) {
     return InkWell(
       borderRadius: BorderRadius.circular(15),
       onTap: () {
@@ -99,7 +94,7 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
     );
   }
 
-  Widget buildLestGoButton() {
+  Widget letsGoButton() {
     return RoundedButton(
         color: AppColor.AccentGreen,
         onPressed: widget.onButtonTap,

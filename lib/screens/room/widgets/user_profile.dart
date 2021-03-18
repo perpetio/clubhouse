@@ -3,13 +3,13 @@ import 'package:clubhouse/utils/app_color.dart';
 import 'package:clubhouse/widgets/rounded_image.dart';
 import 'package:flutter/material.dart';
 
-class RoomProfile extends StatelessWidget {
+class UserProfile extends StatelessWidget {
   final User user;
   final double size;
   final bool isMute;
   final bool isModerator;
 
-  const RoomProfile(
+  const UserProfile(
       {Key key,
       this.user,
       this.size,
@@ -34,14 +34,14 @@ class RoomProfile extends StatelessWidget {
                 height: size,
               ),
             ),
-            buildMute(isMute),
+            mute(isMute),
           ],
         ),
         SizedBox(height: 10),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            buildModerator(isModerator),
+            moderator(isModerator),
             Text(
               user.name.split(' ')[0],
               overflow: TextOverflow.ellipsis,
@@ -56,7 +56,7 @@ class RoomProfile extends StatelessWidget {
     );
   }
 
-  Widget buildModerator(bool isModerator) {
+  Widget moderator(bool isModerator) {
     return isModerator
         ? Container(
             margin: const EdgeInsets.only(right: 5),
@@ -69,7 +69,7 @@ class RoomProfile extends StatelessWidget {
         : Container();
   }
 
-  Widget buildMute(bool isMute) {
+  Widget mute(bool isMute) {
     return Positioned(
       right: 0,
       bottom: 0,

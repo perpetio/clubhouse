@@ -23,18 +23,18 @@ class _SmsScreenState extends State<SmsScreen> {
         padding: const EdgeInsets.only(top: 30, bottom: 60),
         child: Column(
           children: [
-            buildTitle(),
+            title(),
             SizedBox(height: 50),
-            buildForm(),
+            form(),
             Spacer(),
-            buildBottom(),
+            bottom(),
           ],
         ),
       ),
     );
   }
 
-  Widget buildTitle() {
+  Widget title() {
     return Padding(
       padding: const EdgeInsets.only(left: 90.0, right: 90.0),
       child: Text(
@@ -45,7 +45,7 @@ class _SmsScreenState extends State<SmsScreen> {
     );
   }
 
-  Widget buildForm() {
+  Widget form() {
     return Column(
       children: [
         Container(
@@ -84,7 +84,7 @@ class _SmsScreenState extends State<SmsScreen> {
     );
   }
 
-  Widget buildBottom() {
+  Widget bottom() {
     return Column(
       children: [
         SizedBox(height: 30),

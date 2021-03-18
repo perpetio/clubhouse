@@ -33,14 +33,14 @@ class RoomCard extends StatelessWidget {
           SizedBox(height: 15),
           Row(
             children: [
-              buildProfileImages(),
+              profileImages(),
               SizedBox(width: 10),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  buildUserList(),
+                  usersList(),
                   SizedBox(height: 5),
-                  buildRoomInfo(),
+                  roomInfo(),
                 ],
               ),
             ],
@@ -50,7 +50,7 @@ class RoomCard extends StatelessWidget {
     );
   }
 
-  Widget buildProfileImages() {
+  Widget profileImages() {
     return Stack(
       children: [
         RoundedImage(
@@ -62,7 +62,7 @@ class RoomCard extends StatelessWidget {
     );
   }
 
-  Widget buildUserList() {
+  Widget usersList() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -86,7 +86,7 @@ class RoomCard extends StatelessWidget {
     );
   }
 
-  Widget buildRoomInfo() {
+  Widget roomInfo() {
     return Row(
       children: [
         Text(

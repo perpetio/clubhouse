@@ -29,14 +29,14 @@ class ProfileScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
-            buildProfile(),
+            profileBody(),
           ],
         ),
       ),
     );
   }
 
-  Widget buildProfile() {
+  Widget profileBody() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

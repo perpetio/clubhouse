@@ -1,6 +1,6 @@
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:clubhouse/models/models.dart';
-import 'package:clubhouse/screens/room/widgets/room_profile.dart';
+import 'package:clubhouse/screens/room/widgets/user_profile.dart';
 import 'package:clubhouse/core/data.dart';
 import 'package:clubhouse/utils/app_color.dart';
 import 'package:clubhouse/core/settings.dart';
@@ -185,7 +185,7 @@ class _RoomScreenState extends State<RoomScreen> {
       ),
       itemCount: users.length,
       itemBuilder: (gc, index) {
-        return RoomProfile(
+        return UserProfile(
           user: users[index],
           isModerator: index == 0,
           isMute: false,
@@ -218,7 +218,7 @@ class _RoomScreenState extends State<RoomScreen> {
           ),
           itemCount: users.length,
           itemBuilder: (gc, index) {
-            return RoomProfile(user: users[index], size: 60);
+            return UserProfile(user: users[index], size: 60);
           },
         ),
       ],

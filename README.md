@@ -1,6 +1,15 @@
 # Clubhouse
 
-Clubhouse clone built on Flutter
+Clubhouse clone built on Flutter using Firebase and Agora services.
+
+## Preview
+<p align="center">
+ <img src="assets/screenshots/1.png" width='150'/>
+ <img src="assets/screenshots/2.png" width='150'/>
+ <img src="assets/screenshots/3.png" width='150'/>
+  <img src="assets/screenshots/4.png" width='150'/>
+</p>
+
 
 ## Packages
 * agora_rtc_engine: https://pub.dev/packages/agora_rtc_engine

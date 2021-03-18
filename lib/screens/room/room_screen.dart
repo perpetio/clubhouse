@@ -107,11 +107,11 @@ class _RoomScreenState extends State<RoomScreen> {
           ],
         ),
       ),
-      body: buildBody(),
+      body: body(),
     );
   }
 
-  Widget buildBody() {
+  Widget body() {
     return Container(
       padding: const EdgeInsets.only(
         left: 20,
@@ -131,12 +131,12 @@ class _RoomScreenState extends State<RoomScreen> {
             padding: const EdgeInsets.only(bottom: 80, top: 20),
             child: Column(
               children: [
-                buildTitle(widget.room.title),
+                title(widget.room.title),
                 SizedBox(height: 30),
-                buildSpeakers(
+                speakers(
                   widget.room.users.sublist(0, widget.room.speakerCount),
                 ),
-                buildOthers(
+                others(
                   widget.room.users.sublist(widget.room.speakerCount),
                 ),
               ],
@@ -144,14 +144,14 @@ class _RoomScreenState extends State<RoomScreen> {
           ),
           Align(
             alignment: Alignment.bottomCenter,
-            child: buildBottom(context),
+            child: bottom(context),
           ),
         ],
       ),
     );
   }
 
-  Widget buildTitle(String title) {
+  Widget title(String title) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -176,7 +176,7 @@ class _RoomScreenState extends State<RoomScreen> {
     );
   }
 
-  Widget buildSpeakers(List<User> users) {
+  Widget speakers(List<User> users) {
     return GridView.builder(
       shrinkWrap: true,
       physics: ScrollPhysics(),
@@ -195,7 +195,7 @@ class _RoomScreenState extends State<RoomScreen> {
     );
   }
 
-  Widget buildOthers(List<User> users) {
+  Widget others(List<User> users) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -225,7 +225,7 @@ class _RoomScreenState extends State<RoomScreen> {
     );
   }
 
-  Widget buildBottom(BuildContext context) {
+  Widget bottom(BuildContext context) {
     return Container(
       color: Colors.white,
       child: Row(

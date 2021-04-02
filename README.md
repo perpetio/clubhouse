@@ -2,8 +2,10 @@
 
 Clubhouse clone written in Flutter using Firebase/Firestore and Agora services.
 See our tutorial posts
-Part 1 - https://perpet.io/blog/how-to-build-a-clubhouse-clone-app-with-flutter-a-tutorial-by-perpetio-part-i/
-Part 2 - https://perpet.io/blog/how-to-build-a-clubhouse-clone-app-with-flutter-a-tutorial-by-perpetio-part-ii/
+
+Part 1 - [Setup Flutter project and create Clubhouse clone app UI](https://perpet.io/blog/how-to-build-a-clubhouse-clone-app-with-flutter-a-tutorial-by-perpetio-part-i/)
+
+Part 2 - [User login and registration with Firebase](https://perpet.io/blog/how-to-build-a-clubhouse-clone-app-with-flutter-a-tutorial-by-perpetio-part-ii/)
 
 ## Preview
 <p align="center">

@@ -8,6 +8,9 @@ Part 1 - [Setup Flutter project and create Clubhouse clone app UI](https://perpe
 
 Part 2 - [User login and registration with Firebase](https://perpet.io/blog/how-to-build-a-clubhouse-clone-app-with-flutter-a-tutorial-by-perpetio-part-ii/)
 
+Part 3 - [Voice calling functionality with Agora](https://perpet.io/blog/how-to-build-a-clubhouse-clone-app-with-flutter-a-tutorial-by-perpetio-part-iii/)
+
+
 ## Preview
 <p align="center">
  <img src="assets/screenshots/1.gif" width='200'/>

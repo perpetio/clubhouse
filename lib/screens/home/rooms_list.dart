@@ -52,17 +52,17 @@ class _RoomsListState extends State<RoomsList> {
         // Launch user microphone permission
         await Permission.microphone.request();
         // Open BottomSheet dialog
-        // showModalBottomSheet(
-        //   isScrollControlled: true,
-        //   context: context,
-        //   builder: (context) {
-        //     return RoomScreen(
-        //       room: room,
-        //       // Pass user role
-        //       role: ClientRoleType.clientRoleAudience,
-        //     );
-        //   },
-        // );
+        showModalBottomSheet(
+          isScrollControlled: true,
+          context: context,
+          builder: (context) {
+            return RoomScreen(
+              room: room,
+              // Pass user role
+              role: ClientRoleType.clientRoleAudience,
+            );
+          },
+        );
       },
       child: Container(
         margin: const EdgeInsets.symmetric(

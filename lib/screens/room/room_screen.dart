@@ -257,16 +257,16 @@ class _RoomScreenState extends State<RoomScreen> {
           RoundedButton(
             onPressed: () {
               Navigator.of(context).pop();
-              // showModalBottomSheet(
-              //   isScrollControlled: true,
-              //   context: context,
-              //   builder: (context) {
-              //     return RoomScreen(
-              //       room: widget.room,
-              //       role: ClientRoleType.clientRoleBroadcaster,
-              //     );
-              //   },
-              // );
+              showModalBottomSheet(
+                isScrollControlled: true,
+                context: context,
+                builder: (context) {
+                  return RoomScreen(
+                    room: widget.room,
+                    role: ClientRoleType.clientRoleBroadcaster,
+                  );
+                },
+              );
             },
             color: AppColor.LightGrey,
             isCircle: true,

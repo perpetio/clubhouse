@@ -35,6 +35,16 @@ Part 3 - [Voice calling functionality with Agora](https://perpet.io/blog/how-to-
 
 ## Getting started
 
+#### Requirements
+
+- Firebase CLI
+- Flutter Fire configurator
+
+- Firebase configure
+
+`dart pub global activate flutterfire_cli`
+
+`flutterfire configure --project=<firebaseProjectName>`
 #### 1. [Setup Flutter](https://flutter.dev/docs/get-started/install).
 
 #### 2. Clone the repo.

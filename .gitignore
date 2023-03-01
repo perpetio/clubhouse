@@ -23,6 +23,7 @@
 # Flutter/Dart/Pub related
 **/doc/api/
 .dart_tool/
+.flutter-plugins-dependencies
 .flutter-plugins
 .packages
 .pub-cache/
@@ -72,3 +73,5 @@
 !**/ios/**/default.pbxuser
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
+
+lib/firebase_options.dart

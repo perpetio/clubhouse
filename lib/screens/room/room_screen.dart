@@ -1,4 +1,4 @@
-import 'package:agora_rtc_engine/rtc_engine.dart';
+import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:clubhouse/models/models.dart';
 import 'package:clubhouse/screens/room/widgets/user_profile.dart';
 import 'package:clubhouse/core/data.dart';
@@ -6,7 +6,7 @@ import 'package:clubhouse/utils/app_color.dart';
 import 'package:clubhouse/core/settings.dart';
 import 'package:clubhouse/widgets/rounded_button.dart';
 import 'package:clubhouse/widgets/rounded_image.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide ModalBottomSheetRoute;
 import '../../core/settings.dart';
 
 /// Detail screen of selected room
@@ -14,7 +14,7 @@ import '../../core/settings.dart';
 
 class RoomScreen extends StatefulWidget {
   final Room room;
-  final ClientRole role;
+  final ClientRoleType role;
 
   const RoomScreen({Key key, this.room, this.role}) : super(key: key);
 
@@ -41,7 +41,7 @@ class _RoomScreenState extends State<RoomScreen> {
     _users.clear();
     // Destroy sdk
     _engine.leaveChannel();
-    _engine.destroy();
+    // _engine.destroy();
     super.dispose();
   }
 
@@ -49,35 +49,36 @@ class _RoomScreenState extends State<RoomScreen> {
   Future<void> initialize() async {
     await _initAgoraRtcEngine();
     _addAgoraEventHandlers();
-    await _engine.joinChannel(Token, channelName, null, 0);
+    await _engine.joinChannel(
+        token: Token, channelId: channelName, options: null, uid: 0);
   }
 
   Future<void> _initAgoraRtcEngine() async {
-    _engine = await RtcEngine.create(APP_ID);
+    _engine = createAgoraRtcEngine();
+    await _engine.initialize(const RtcEngineContext(
+      appId: APP_ID,
+      channelProfile: ChannelProfileType.channelProfileLiveBroadcasting,
+    ));
     await _engine.enableAudio();
-    await _engine.setChannelProfile(ChannelProfile.LiveBroadcasting);
-    await _engine.setClientRole(widget.role);
+    await _engine.setClientRole(role: widget.role);
   }
 
   /// Add Agora event handlers
 
   void _addAgoraEventHandlers() {
-    _engine.setEventHandler(RtcEngineEventHandler(
-      error: (code) {
+    _engine.registerEventHandler(RtcEngineEventHandler(
+      onError: (ErrorCodeType code, err) async {
         setState(() {
-          print('onError: $code');
+          print('onError: $code $err');
         });
       },
-      joinChannelSuccess: (channel, uid, elapsed) {
-        print('onJoinChannel: $channel, uid: $uid');
-      },
-      leaveChannel: (stats) {
+      onLeaveChannel: (RtcConnection connection, RtcStats stats) {
         setState(() {
           print('onLeaveChannel');
           _users.clear();
         });
       },
-      userJoined: (uid, elapsed) {
+      onUserJoined: (RtcConnection connection, uid, elapsed) {
         print('userJoined: $uid');
         setState(() {
           _users.add(uid);
@@ -256,16 +257,16 @@ class _RoomScreenState extends State<RoomScreen> {
           RoundedButton(
             onPressed: () {
               Navigator.of(context).pop();
-              showModalBottomSheet(
-                isScrollControlled: true,
-                context: context,
-                builder: (context) {
-                  return RoomScreen(
-                    room: widget.room,
-                    role: ClientRole.Broadcaster,
-                  );
-                },
-              );
+              // showModalBottomSheet(
+              //   isScrollControlled: true,
+              //   context: context,
+              //   builder: (context) {
+              //     return RoomScreen(
+              //       room: widget.room,
+              //       role: ClientRoleType.clientRoleBroadcaster,
+              //     );
+              //   },
+              // );
             },
             color: AppColor.LightGrey,
             isCircle: true,

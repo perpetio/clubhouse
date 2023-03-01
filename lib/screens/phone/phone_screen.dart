@@ -24,7 +24,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
     };
 
     final PhoneVerificationFailed verificationfailed =
-        (AuthException authException) {
+        (FirebaseAuthException authException) {
       print('${authException.message}');
     };
 
@@ -45,7 +45,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
         phoneNumber: phoneNumber,
 
         ///No duplicated SMS will be sent out upon re-entry (before timeout).
-        timeout: const Duration(seconds: 5),
+        timeout: const Duration(seconds: 30),
 
         /// If the SIM (with phoneNumber) is in the current device this function is called.
         /// This function gives `AuthCredential`. Moreover `login` function can be called from this callback
@@ -145,7 +145,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
           minimumWidth: 230,
           disabledColor: AppColor.AccentBlue.withOpacity(0.3),
           onPressed: () {
-            verifyPhone('+380${_phoneNumberController.text}');
+            verifyPhone('+976${_phoneNumberController.text}');
           },
           child: Container(
             child: Row(

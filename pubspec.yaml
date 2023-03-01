@@ -7,19 +7,21 @@ version: 1.0.0+1
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
-
+module:
+    androidX: true
 dependencies:
   flutter:
     sdk: flutter
-
   cupertino_icons: ^1.0.0
-  agora_rtc_engine: ^3.2.1
+  agora_rtc_engine: ^6.1.0
   permission_handler: ^5.0.0
-  firebase_auth:
-  firebase_core: ^0.4.4
-  cloud_firestore: ^0.12.9
   country_code_picker: ^2.0.1
-  pull_to_refresh: ^1.6.4
+  # pull_to_refresh: ^1.6.4
+  firebase_auth: ^0.20.1
+  firebase_core: ^0.7.0
+  cloud_firestore: ^0.16.0+1
+  provider: ^6.0.5
+  pull_to_refresh: ^2.0.0
 
 dev_dependencies:
   flutter_test:

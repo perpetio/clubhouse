@@ -1,4 +1,4 @@
-import 'package:agora_rtc_engine/rtc_engine.dart';
+import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:clubhouse/models/models.dart';
 import 'package:clubhouse/screens/home/widgets/home_bottom_sheet.dart';
@@ -22,7 +22,7 @@ class RoomsList extends StatefulWidget {
 
 class _RoomsListState extends State<RoomsList> {
   // Setting reference to 'rooms' collection
-  final collection = Firestore.instance.collection('rooms');
+  final collection = FirebaseFirestore.instance.collection('rooms');
   final FirebaseAuth auth = FirebaseAuth.instance;
   RefreshController _refreshController = RefreshController(
     initialRefresh: false,
@@ -52,17 +52,17 @@ class _RoomsListState extends State<RoomsList> {
         // Launch user microphone permission
         await Permission.microphone.request();
         // Open BottomSheet dialog
-        showModalBottomSheet(
-          isScrollControlled: true,
-          context: context,
-          builder: (context) {
-            return RoomScreen(
-              room: room,
-              // Pass user role
-              role: ClientRole.Audience,
-            );
-          },
-        );
+        // showModalBottomSheet(
+        //   isScrollControlled: true,
+        //   context: context,
+        //   builder: (context) {
+        //     return RoomScreen(
+        //       room: room,
+        //       // Pass user role
+        //       role: ClientRoleType.clientRoleAudience,
+        //     );
+        //   },
+        // );
       },
       child: Container(
         margin: const EdgeInsets.symmetric(
@@ -133,7 +133,7 @@ class _RoomsListState extends State<RoomsList> {
                                 speakerCount: 1,
                               ),
                               // Pass user role
-                              role: ClientRole.Broadcaster,
+                              role: ClientRoleType.clientRoleBroadcaster,
                             );
                           },
                         );
@@ -169,12 +169,12 @@ class _RoomsListState extends State<RoomsList> {
                     onRefresh: _onRefresh,
                     onLoading: _onLoading,
                     child: ListView(
-                      children: snapshot.data.documents
-                          .map((DocumentSnapshot document) {
+                      children:
+                          snapshot.data.docs.map((DocumentSnapshot document) {
                         return Dismissible(
-                          key: ObjectKey(document.data.keys),
+                          key: ObjectKey(document.id),
                           onDismissed: (direction) {
-                            collection.document(document.documentID).delete();
+                            collection.doc(document.id).delete();
                           },
                           child: roomCard(
                             Room.fromJson(document),

@@ -1,10 +1,11 @@
 import 'package:clubhouse/utils/router.dart';
-import 'package:clubhouse/services/authenticate.dart';
 import 'package:clubhouse/utils/app_color.dart';
 import 'package:clubhouse/widgets/rounded_button.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import '../../services/authentication.dart';
 
 /// The screen for entering a phone number
 /// Made up of three main components: title, form, bottom part

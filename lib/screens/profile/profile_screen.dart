@@ -1,9 +1,10 @@
 import 'package:clubhouse/utils/router.dart';
 import 'package:clubhouse/models/models.dart';
-import 'package:clubhouse/services/authenticate.dart';
 import 'package:clubhouse/core/data.dart';
 import 'package:clubhouse/widgets/rounded_image.dart';
 import 'package:flutter/material.dart';
+
+import '../../services/authentication.dart';
 
 /// Contain information about current user profile
 

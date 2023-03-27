@@ -9,53 +9,13 @@ import '../screens/loading.dart';
 import '../utils/app_color.dart';
 
 class AuthService {
-  /// returns the initial screen depending on the authentication results
   handleAuth() {
     return (BuildContext context, snapshot) {
       if (snapshot.hasData) {
-        return MaterialApp(
-            title: 'Clubhouse',
-            debugShowCheckedModeBanner: false,
-            onGenerateRoute: router,
-            theme: ThemeData(
-              scaffoldBackgroundColor: AppColor.LightBrown,
-              appBarTheme: AppBarTheme(
-                color: AppColor.LightBrown,
-                elevation: 0.0,
-                brightness: Brightness.light,
-                iconTheme: IconThemeData(
-                  color: Colors.black,
-                ),
-              ),
-            ),
-            home: StreamBuilder(
-              stream: FirebaseAuth.instance.authStateChanges(),
-              builder: (BuildContext context, snapshot) {
-                if (snapshot.hasData) {
-                  print(snapshot.data.toString());
-                  return HomeScreen();
-                } else {
-                  return PhoneScreen();
-                }
-              },
-            ));
+        print(snapshot.data.toString());
+        return HomeScreen();
       } else {
-        return MaterialApp(
-            title: 'Clubhouse',
-            debugShowCheckedModeBanner: false,
-            onGenerateRoute: router,
-            theme: ThemeData(
-              scaffoldBackgroundColor: AppColor.LightBrown,
-              appBarTheme: AppBarTheme(
-                color: AppColor.LightBrown,
-                elevation: 0.0,
-                brightness: Brightness.light,
-                iconTheme: IconThemeData(
-                  color: Colors.black,
-                ),
-              ),
-            ),
-            home: LoadingScreen());
+        return PhoneScreen();
       }
     };
   }

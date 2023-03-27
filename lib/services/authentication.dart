@@ -2,13 +2,18 @@ import 'package:clubhouse/screens/phone/phone_screen.dart';
 import 'package:clubhouse/utils/router.dart';
 import 'package:clubhouse/screens/home/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
-import '../screens/loading.dart';
-import '../utils/app_color.dart';
+import 'package:clubhouse/models/models.dart' as Model;
 
 class AuthService {
+  getUser() {
+    return Model.User.fromJson({
+      "name": FirebaseAuth.instance.currentUser.phoneNumber ?? "guest",
+      'username': FirebaseAuth.instance.currentUser.phoneNumber ?? "guest",
+      'profileImage': 'assets/images/profile.png',
+    });
+  }
+
   handleAuth() {
     return (BuildContext context, snapshot) {
       if (snapshot.hasData) {
@@ -32,6 +37,16 @@ class AuthService {
     UserCredential result =
         await FirebaseAuth.instance.signInWithCredential(authCreds);
 
+    if (result.user != null) {
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil(Routers.home, (route) => false);
+    } else {
+      print("Error");
+    }
+  }
+
+  signInAnonymously(BuildContext context) async {
+    UserCredential result = await FirebaseAuth.instance.signInAnonymously();
     if (result.user != null) {
       Navigator.of(context)
           .pushNamedAndRemoveUntil(Routers.home, (route) => false);

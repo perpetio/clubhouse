@@ -17,6 +17,7 @@ class PhoneScreen extends StatefulWidget {
 
 class _PhoneScreenState extends State<PhoneScreen> {
   final _phoneNumberController = TextEditingController();
+  final _countryController = TextEditingController(text: "+976");
   String verificationId;
 
   Future<void> verifyPhone(phoneNumber) async {
@@ -100,7 +101,8 @@ class _PhoneScreenState extends State<PhoneScreen> {
       child: Row(
         children: [
           CountryCodePicker(
-            initialSelection: 'UA',
+            onChanged: (value) => _countryController.text = value.dialCode,
+            initialSelection: _countryController.text,
             showCountryOnly: false,
             alignLeft: false,
             padding: const EdgeInsets.all(8),
@@ -146,7 +148,8 @@ class _PhoneScreenState extends State<PhoneScreen> {
           minimumWidth: 230,
           disabledColor: AppColor.AccentBlue.withOpacity(0.3),
           onPressed: () {
-            verifyPhone('+976${_phoneNumberController.text}');
+            verifyPhone(
+                '${_countryController.text}${_phoneNumberController.text}');
           },
           child: Container(
             child: Row(
@@ -154,6 +157,27 @@ class _PhoneScreenState extends State<PhoneScreen> {
               children: [
                 Text(
                   'Next',
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+                Icon(Icons.arrow_right_alt, color: Colors.white),
+              ],
+            ),
+          ),
+        ),
+        SizedBox(height: 30),
+        RoundedButton(
+          color: AppColor.AccentBlue,
+          minimumWidth: 230,
+          disabledColor: AppColor.AccentBlue.withOpacity(0.3),
+          onPressed: () {
+            AuthService().signInAnonymously(context);
+          },
+          child: Container(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Guest',
                   style: TextStyle(color: Colors.white, fontSize: 20),
                 ),
                 Icon(Icons.arrow_right_alt, color: Colors.white),

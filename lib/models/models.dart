@@ -3,12 +3,9 @@ class Room {
   final String title;
   final List<User> users;
   final int speakerCount;
+  final String owner;
 
-  Room({
-    this.title,
-    this.speakerCount,
-    this.users,
-  });
+  Room({this.title, this.speakerCount, this.users, this.owner});
 
   factory Room.fromJson(json) {
     return Room(
@@ -20,6 +17,7 @@ class Room {
           profileImage: user['profileImage'],
         );
       }).toList(),
+      owner: json['owner'],
       speakerCount: json['speakerCount'],
     );
   }

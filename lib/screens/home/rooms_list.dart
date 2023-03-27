@@ -1,16 +1,17 @@
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:clubhouse/models/models.dart';
+import 'package:clubhouse/models/models.dart' as Model;
 import 'package:clubhouse/screens/home/widgets/home_bottom_sheet.dart';
 import 'package:clubhouse/screens/home/widgets/room_card.dart';
 import 'package:clubhouse/screens/room/room_screen.dart';
 import 'package:clubhouse/utils/app_color.dart';
-import 'package:clubhouse/core/data.dart';
 import 'package:clubhouse/widgets/rounded_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+
+import '../../services/authentication.dart';
 
 /// Fetch Rooms list from `Firestore`
 /// Use `pull_to_refresh` plugin, which provides pull-up load and pull-down refresh for room list
@@ -46,7 +47,7 @@ class _RoomsListState extends State<RoomsList> {
     _refreshController.loadComplete();
   }
 
-  Widget roomCard(Room room) {
+  Widget roomCard(Model.Room room) {
     return GestureDetector(
       onTap: () async {
         // Launch user microphone permission
@@ -59,7 +60,7 @@ class _RoomsListState extends State<RoomsList> {
             return RoomScreen(
               room: room,
               // Pass user role
-              role: ClientRoleType.clientRoleAudience,
+              role: ClientRoleType.clientRoleBroadcaster,
             );
           },
         );
@@ -113,8 +114,17 @@ class _RoomsListState extends State<RoomsList> {
                         // Add new data to Firestore collection
                         await collection.add(
                           {
-                            'title': '${myProfile.name}\'s Room',
-                            'users': [profileData],
+                            'title':
+                                '${AuthService().getUser().username}\'s Room',
+                            'owner': AuthService().getUser().username,
+                            'users': [
+                              {
+                                "name": AuthService().getUser().name,
+                                "username": AuthService().getUser().username,
+                                "profileImage":
+                                    AuthService().getUser().profileImage,
+                              }
+                            ],
                             'speakerCount': 1
                           },
                         );
@@ -127,9 +137,18 @@ class _RoomsListState extends State<RoomsList> {
                           context: context,
                           builder: (context) {
                             return RoomScreen(
-                              room: Room(
-                                title: '${myProfile.name}\'s Room',
-                                users: [myProfile],
+                              room: Model.Room(
+                                title:
+                                    '${AuthService().getUser().username}\'s Room',
+                                users: [
+                                  Model.User.fromJson({
+                                    "name": AuthService().getUser().name,
+                                    "username":
+                                        AuthService().getUser().username,
+                                    "profileImage":
+                                        AuthService().getUser().profileImage,
+                                  })
+                                ],
                                 speakerCount: 1,
                               ),
                               // Pass user role
@@ -174,10 +193,15 @@ class _RoomsListState extends State<RoomsList> {
                         return Dismissible(
                           key: ObjectKey(document.id),
                           onDismissed: (direction) {
-                            collection.doc(document.id).delete();
+                            if (document.data()["owner"] ==
+                                AuthService().getUser().username)
+                              collection.doc(document.id).delete();
+                            collection.doc(document.id).update({
+                              "version": (document.data()["version"] ?? 0) + 1
+                            });
                           },
                           child: roomCard(
-                            Room.fromJson(document),
+                            Model.Room.fromJson(document),
                           ),
                         );
                       }).toList(),

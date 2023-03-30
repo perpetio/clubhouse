@@ -37,7 +37,7 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               // List of 3 rooms: Open, Social, and Closed
-              for (var i = 0, len = 3; i < len; i++) roomCard(i),
+              for (var i = 0, len = 1; i < len; i++) roomCard(i),
             ],
           ),
           Divider(thickness: 1, height: 60, indent: 20, endIndent: 20),

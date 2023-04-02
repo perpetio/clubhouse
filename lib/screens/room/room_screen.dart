@@ -1,6 +1,12 @@
+import 'dart:convert';
+import 'dart:ui';
+
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:clubhouse/models/models.dart';
 import 'package:clubhouse/screens/room/widgets/user_profile.dart';
+import 'package:clubhouse/services/authentication.dart';
+import 'package:clubhouse/services/firebase.dart';
 import 'package:clubhouse/utils/app_color.dart';
 import 'package:clubhouse/core/settings.dart';
 import 'package:clubhouse/widgets/rounded_button.dart';
@@ -27,6 +33,7 @@ class _RoomScreenState extends State<RoomScreen> {
   String token = Token;
 
   int uid = 0;
+  bool loading = false;
 
   int volume = 50;
   bool _isMuted = false;
@@ -58,10 +65,44 @@ class _RoomScreenState extends State<RoomScreen> {
       options: options,
       uid: uid,
     );
+    joinAfterUpdate();
   }
 
-  void leave() {
-    agoraEngine.leaveChannel();
+  void joinAfterUpdate() {
+    final fire =
+        FirebaseFirestore.instance.collection("rooms").doc(widget.room.id);
+
+    widget.room.users.add(User.fromJson({
+      "name": AuthService().getUser().name,
+      "username": AuthService().getUser().username,
+      "profileImage": AuthService().getUser().profileImage,
+    }));
+
+    List<User> filteredUsers = widget.room.users.where(
+        (element) => element.username == AuthService().getUser().usename);
+
+    fire.update({...widget.room.toJson(), "users": filteredUsers});
+  }
+
+  leaveAfterUpdate() async {
+    final fire =
+        FirebaseFirestore.instance.collection("rooms").doc(widget.room.id);
+
+    final room = await fire.get();
+    List<User> filteredUsers = room["users"].where(
+        (element) => element.username != AuthService().getUser().usename);
+    print(filteredUsers);
+
+    fire.update({...widget.room.toJson(), "users": filteredUsers});
+  }
+
+  leave() async {
+    if (loading) return;
+    setState(() {
+      loading = true;
+    });
+    leaveAfterUpdate();
+    await agoraEngine.leaveChannel();
   }
 
   @override
@@ -263,13 +304,15 @@ class _RoomScreenState extends State<RoomScreen> {
       child: Row(
         children: [
           RoundedButton(
-            onPressed: () {
-              leave();
-              Navigator.pop(context);
-            },
+            onPressed: loading
+                ? null
+                : () async {
+                    await leave();
+                    Navigator.pop(context);
+                  },
             color: AppColor.LightGrey,
             child: Text(
-              '✌️ Leave quietly',
+              loading ? "..." : '✌️ Leave quietly',
               style: TextStyle(
                   color: AppColor.AccentRed,
                   fontSize: 15,
@@ -278,19 +321,7 @@ class _RoomScreenState extends State<RoomScreen> {
           ),
           Spacer(),
           RoundedButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              showModalBottomSheet(
-                isScrollControlled: true,
-                context: context,
-                builder: (context) {
-                  return RoomScreen(
-                    room: widget.room,
-                    role: widget.role,
-                  );
-                },
-              );
-            },
+            onPressed: null,
             color: AppColor.LightGrey,
             isCircle: true,
             child: Icon(Icons.hail, size: 15, color: Colors.black),

@@ -1,14 +1,16 @@
 /// Room model
 class Room {
+  final String id;
   final String title;
   final List<User> users;
   final int speakerCount;
   final String owner;
 
-  Room({this.title, this.speakerCount, this.users, this.owner});
+  Room({this.id, this.title, this.speakerCount, this.users, this.owner});
 
   factory Room.fromJson(json) {
     return Room(
+      id: json.id,
       title: json['title'],
       users: json['users'].map<User>((user) {
         return User(
@@ -21,6 +23,16 @@ class Room {
       speakerCount: json['speakerCount'],
     );
   }
+
+  Map<String, dynamic> toJson() => {
+        id: this.id,
+        title: this.title,
+        "users": this.users.map((user) {
+          return user.toJson();
+        }).toList(),
+        owner: this.owner,
+        "speakerCount": this.speakerCount,
+      };
 }
 
 /// User model
@@ -42,4 +54,9 @@ class User {
       profileImage: json['profileImage'],
     );
   }
+  Map<String, dynamic> toJson() => {
+        "name": this.name,
+        "username": this.username,
+        "profileImage": this.profileImage,
+      };
 }

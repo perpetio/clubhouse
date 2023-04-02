@@ -13,8 +13,18 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         actions: [
           IconButton(
-            icon: Image.asset('assets/images/profile.png'),
-            tooltip: 'Show Snackbar',
+            iconSize: 32,
+            icon: Icon(Icons.notifications_outlined),
+            tooltip: 'Notification',
+            onPressed: () {
+              Navigator.of(context).pushNamed(Routers.profile,
+                  arguments: AuthService().getUser());
+            },
+          ),
+          IconButton(
+            iconSize: 32,
+            icon: Icon(Icons.person_outline),
+            tooltip: 'Profile',
             onPressed: () {
               Navigator.of(context).pushNamed(Routers.profile,
                   arguments: AuthService().getUser());
@@ -22,8 +32,12 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
         title: Text(
-          "Clubhouse",
-          style: TextStyle(color: Colors.black),
+          "Clubhouse".toUpperCase(),
+          style: TextStyle(
+              color: Colors.black,
+              fontSize: 20,
+              fontFamily: "NewSpirit",
+              fontWeight: FontWeight.bold),
         ),
       ),
       body: RoomsList(),

@@ -8,7 +8,7 @@ version: 1.0.0+1
 environment:
   sdk: ">=2.2.2 <3.0.0"
 module:
-    androidX: true
+  androidX: true
 dependencies:
   flutter:
     sdk: flutter
@@ -29,6 +29,9 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-
+  fonts:
+    - family: NewSpirit
+      fonts: 
+        - asset: assets/fonts/NewSpirit.ttf
   assets:
     - assets/images/
